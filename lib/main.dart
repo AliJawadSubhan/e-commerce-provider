@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:multivendorapp/firebase_options.dart';
-import 'package:multivendorapp/view_controllers/register_controller.dart';
-import 'package:multivendorapp/views/auth/login.dart';
+import 'package:multivendorapp/view_controllers/auth_controller.dart';
+import 'package:multivendorapp/view_controllers/home_controller.dart';
+import 'package:multivendorapp/views/buyers/main_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -23,17 +24,22 @@ class MultiVendorApp extends StatelessWidget {
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => RegisterController()),
+        ChangeNotifierProvider(create: (_) => AuthController()),
+        ChangeNotifierProvider(create: (_) => HomeController()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+          scaffoldBackgroundColor: Colors.blueGrey[50],
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.indigo,
+            primary: Colors.indigo,
+          ),
           useMaterial3: true,
           textTheme: GoogleFonts.montserratTextTheme(),
         ),
-        home: LoginScreen(),
+        home: MainScreen(),
       ),
     );
   }

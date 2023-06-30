@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multivendorapp/ui_helper/functions.dart';
-import 'package:multivendorapp/view_controllers/register_controller.dart';
+import 'package:multivendorapp/ui_helper/widgets/app_name.dart';
+import 'package:multivendorapp/view_controllers/auth_controller.dart';
 import 'package:multivendorapp/views/auth/login.dart';
 import 'package:provider/provider.dart';
 
@@ -10,10 +11,10 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey[50],
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          AppMainText(),
           SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -27,8 +28,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   TextField(
-                    controller:
-                        context.watch<RegisterController>().emailController,
+                    controller: context.watch<AuthController>().emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
                       prefixIcon: Icon(Icons.email),
@@ -42,7 +42,7 @@ class RegisterScreen extends StatelessWidget {
                   setVerticalHeight15(),
                   TextField(
                     controller:
-                        context.watch<RegisterController>().passowrdController,
+                        context.watch<AuthController>().passowrdController,
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Password',
@@ -58,7 +58,7 @@ class RegisterScreen extends StatelessWidget {
 
                   TextField(
                     controller: context
-                        .watch<RegisterController>()
+                        .watch<AuthController>()
                         .confirmPasswordController,
                     obscureText: true,
                     decoration: InputDecoration(
@@ -75,7 +75,7 @@ class RegisterScreen extends StatelessWidget {
                   setVerticalHeight15(),
                   ElevatedButton(
                     onPressed: () {
-                      context.read<RegisterController>().signInUser();
+                      context.read<AuthController>().signInUser(context);
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.indigo,
@@ -83,8 +83,8 @@ class RegisterScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: context.watch<RegisterController>().isLoading
-                        ? Padding(
+                    child: context.watch<AuthController>().isLoading
+                        ? const Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: CircularProgressIndicator(
                               color: Colors.white,

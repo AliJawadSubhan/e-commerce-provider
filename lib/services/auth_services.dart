@@ -4,7 +4,6 @@ import 'package:multivendorapp/services/db_serivce.dart';
 class AuthServices {
   var firebaseAuthInstance = FirebaseAuth.instance;
   //register
-
   registerUser(String email, String password) async {
     try {
       UserCredential user = await firebaseAuthInstance
@@ -14,5 +13,11 @@ class AuthServices {
     } catch (e) {
       rethrow;
     }
+  }
+
+  // login
+  loginUser(String email, String password) async {
+    await firebaseAuthInstance.signInWithEmailAndPassword(
+        email: email, password: password);
   }
 }
