@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:multivendorapp/models/mock_data.dart';
 
 class HomeController extends ChangeNotifier {
-  final cateogories = ['Tech', 'Cosmetics', 'Atheletic', 'Aesthetic'];
+  final productCategories = cateogories;
 }

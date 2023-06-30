@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multivendorapp/ui_helper/functions.dart';
+import 'package:multivendorapp/ui_helper/widgets/app_name.dart';
 import 'package:multivendorapp/view_controllers/home_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -22,30 +23,8 @@ class _HomeState extends State<Home> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // AppMainText(),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'How are you today? ❤️',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  child: FaIcon(FontAwesomeIcons.shoppingCart),
-                )
-              ],
-            ),
-            setVerticalHeight15(),
-            SizedBox(
-              child: TextField(
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(8.0),
-                  hintText: 'Search',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-              ),
+            const AppMainText(
+              fontsize: 20,
             ),
             setVerticalHeight15(),
             SizedBox(
@@ -73,7 +52,7 @@ class _HomeState extends State<Home> {
                         color: Colors.indigo,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text('E-commerce App \n banner'),
                       ),
                     ),
@@ -123,8 +102,9 @@ class _HomeState extends State<Home> {
                 child: ListView.builder(
                     physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemCount:
-                        Provider.of<HomeController>(context).cateogories.length,
+                    itemCount: Provider.of<HomeController>(context)
+                        .productCategories
+                        .length,
                     itemBuilder: (c, i) {
                       return Container(
                         margin: const EdgeInsets.all(5),
@@ -133,7 +113,7 @@ class _HomeState extends State<Home> {
                         color: Colors.blueGrey,
                         child: Center(
                           child: Text(Provider.of<HomeController>(context)
-                              .cateogories[i]),
+                              .productCategories[i]),
                         ),
                       );
                     })),

@@ -17,7 +17,20 @@ class AuthServices {
 
   // login
   loginUser(String email, String password) async {
-    await firebaseAuthInstance.signInWithEmailAndPassword(
-        email: email, password: password);
+    try {
+      await firebaseAuthInstance.signInWithEmailAndPassword(
+          email: email, password: password);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  //logout User
+  logoutUser() async {
+    try {
+      await firebaseAuthInstance.signOut();
+    } catch (e) {
+      rethrow;
+    }
   }
 }
