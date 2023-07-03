@@ -14,15 +14,19 @@ class ProfileController extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
       await authService.logoutUser();
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return LoginScreen();
-      }));
+
       log('Log out successful');
     } catch (e) {
       log(e.toString());
     } finally {
       isLoading = false;
       notifyListeners();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) {
+          return const LoginScreen();
+        }));
+      });
     }
   }
 }

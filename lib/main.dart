@@ -4,11 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:multivendorapp/firebase_options.dart';
 import 'package:multivendorapp/view_controllers/auth_controller.dart';
-import 'package:multivendorapp/view_controllers/catego_controller.dart';
 import 'package:multivendorapp/view_controllers/home_controller.dart';
 import 'package:multivendorapp/view_controllers/landing_page_controller.dart';
 import 'package:multivendorapp/view_controllers/profile_controller.dart';
-import 'package:multivendorapp/views/buyers/main_screen.dart';
 import 'package:multivendorapp/views/landing_page.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +29,6 @@ class MultiVendorApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthController()),
         ChangeNotifierProvider(create: (_) => HomeController()),
         ChangeNotifierProvider(create: (_) => ProfileController()),
-        ChangeNotifierProvider(create: (_) => CategoriesController()),
         ChangeNotifierProvider(create: (_) => LandingPageController()),
       ],
       child: MaterialApp(
@@ -46,7 +43,7 @@ class MultiVendorApp extends StatelessWidget {
           useMaterial3: true,
           textTheme: GoogleFonts.montserratTextTheme(),
         ),
-        home: LandingPage(),
+        home: const LandingPage(),
       ),
     );
   }

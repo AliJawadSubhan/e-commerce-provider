@@ -5,8 +5,30 @@ import 'package:multivendorapp/view_controllers/auth_controller.dart';
 import 'package:multivendorapp/views/auth/login.dart';
 import 'package:provider/provider.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    Provider.of<AuthController>(context, listen: false)
+        .confirmPasswordController
+        .dispose();
+
+    Provider.of<AuthController>(context, listen: false)
+        .passowrdController
+        .dispose();
+
+    Provider.of<AuthController>(context, listen: false)
+        .emailController
+        .dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +36,7 @@ class RegisterScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          AppMainText(),
+          const AppMainText(),
           SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20.0),

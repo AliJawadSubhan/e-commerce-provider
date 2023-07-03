@@ -33,7 +33,7 @@ class AuthController extends ChangeNotifier {
           notifyListeners();
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
-            return MainScreen();
+            return const MainScreen();
           }));
         }
       }

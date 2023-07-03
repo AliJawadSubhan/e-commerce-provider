@@ -5,8 +5,30 @@ import 'package:multivendorapp/view_controllers/auth_controller.dart';
 import 'package:multivendorapp/views/auth/register.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    Provider.of<AuthController>(context, listen: false)
+        .confirmPasswordController
+        .dispose();
+
+    Provider.of<AuthController>(context, listen: false)
+        .passowrdController
+        .dispose();
+
+    Provider.of<AuthController>(context, listen: false)
+        .emailController
+        .dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

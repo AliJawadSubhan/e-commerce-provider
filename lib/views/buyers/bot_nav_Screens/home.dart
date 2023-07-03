@@ -1,22 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multivendorapp/ui_helper/functions.dart';
 import 'package:multivendorapp/ui_helper/widgets/app_name.dart';
 import 'package:multivendorapp/view_controllers/home_controller.dart';
 import 'package:provider/provider.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  ScrollController _scrollController = ScrollController();
-
-  @override
   Widget build(BuildContext context) {
+    final homeController = Provider.of<HomeController>(context);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -31,7 +25,6 @@ class _HomeState extends State<Home> {
               width: MediaQuery.of(context).size.width,
               height: 170,
               child: ListView(
-                controller: _scrollController,
                 scrollDirection: Axis.horizontal,
                 children: [
                   Container(
@@ -65,7 +58,8 @@ class _HomeState extends State<Home> {
                           color: Colors.grey.withOpacity(0.5),
                           spreadRadius: 2,
                           blurRadius: 5,
-                          offset: Offset(0, 3), // changes position of shadow
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
                         ),
                       ],
                     ),
@@ -76,7 +70,7 @@ class _HomeState extends State<Home> {
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text('E-commerce App \n banner'),
                       ),
                     ),
@@ -98,26 +92,49 @@ class _HomeState extends State<Home> {
               ],
             ),
             SizedBox(
-                height: 70,
-                child: ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: Provider.of<HomeController>(context)
-                        .productCategories
-                        .length,
-                    itemBuilder: (c, i) {
-                      return Container(
-                        margin: const EdgeInsets.all(5),
-                        height: 50,
-                        width: 100,
-                        color: Colors.blueGrey,
-                        child: Center(
-                          child: Text(Provider.of<HomeController>(context)
-                              .productCategories[i]),
-                        ),
-                      );
-                    })),
-            setVerticalHeight15(),
+              height: 150,
+              child: StreamBuilder(
+                  stream: homeController.getCategoriesFiresotre(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+                    if (snapshot.data == null) {
+                      return const CircularProgressIndicator();
+                    }
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data?.length,
+                        itemBuilder: (c, i) {
+                          return Container(
+                            margin: const EdgeInsets.all(5),
+                            height: 75,
+                            width: 100,
+                            // color: Colors.blueGrey,
+                            child: Center(
+                              child: Column(
+                                // alignment: Alignment.center,
+                                children: [
+                                  Image.network(
+                                    snapshot.data![i].image,
+                                    fit: BoxFit.fitWidth,
+                                  ),
+                                  Text(
+                                    snapshot.data![i].category.toString(),
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        });
+                  }),
+            ),
+            // setVerticalHeight15(),
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -132,56 +149,88 @@ class _HomeState extends State<Home> {
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height,
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                ),
-                itemCount: 8,
-                itemBuilder: (context, index) {
-                  return Container(
-                    height: 2000, // Adjust the height as needed
-                    color: Colors.indigo[50],
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            height: 120, // Adjust the height as needed
-                            width: double.infinity,
-                            color: Colors.grey[300], // Placeholder color
-                          ),
+              child: StreamBuilder(
+                  stream: homeController.getProducsts(),
+                  builder: (context, snapshot) {
+                    if (snapshot.data == null) {
+                      return const CircularProgressIndicator();
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+                    return SizedBox(
+                      height: MediaQuery.of(context)
+                          .size
+                          .height, // Adjust the height as needed
+
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
                         ),
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'Product Name',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
+                        itemCount: snapshot.data?.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            // Adjust the height as needed
+                            color: Colors.indigo[50],
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Container(
+                                    height: 120, // Adjust the height as needed
+                                    width: double.infinity,
+                                    color: Colors.grey[300],
+                                    child: CachedNetworkImage(
+                                      imageUrl: snapshot.data![index].image,
+                                      progressIndicatorBuilder: (context, url,
+                                              downloadProgress) =>
+                                          SizedBox(
+                                              height: 50,
+                                              child: Center(
+                                                  child:
+                                                      const CircularProgressIndicator())),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                    ),
+// Placeholder color
+                                  ),
+                                ),
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      snapshot.data![index].name,
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    '\$19.99',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                              left: 8.0, right: 8.0, bottom: 8.0),
-                          child: Text(
-                            '\$19.99',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.green,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                          );
+                        },
+                      ),
+                    );
+                  }),
             ),
           ],
         ),
