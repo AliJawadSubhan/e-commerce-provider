@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:multivendorapp/views/buyers/bot_nav_Screens/cart.dart';
-import 'package:multivendorapp/views/buyers/bot_nav_Screens/categories.dart';
-import 'package:multivendorapp/views/buyers/bot_nav_Screens/home.dart';
-import 'package:multivendorapp/views/buyers/bot_nav_Screens/profile.dart';
-import 'package:multivendorapp/views/buyers/bot_nav_Screens/search.dart';
-import 'package:multivendorapp/views/buyers/bot_nav_Screens/store.dart';
+import 'package:multivendorapp/view_controllers/main_screen_Controller.dart';
+
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -15,39 +12,26 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _pageIndex = 0;
-  final List _screens = <Widget>[
-    Home(),
-    Caetegories(),
-    Cart(),
-    Search(),
-    Profile(),
-  ];
-  final PageController _pageController = PageController(initialPage: 0);
-
   @override
   Widget build(BuildContext context) {
+    final mainScreenController = Provider.of<MainScreenController>(context);
+
     return Scaffold(
       body: SafeArea(
           child: PageView(
-        controller: _pageController,
+        controller: mainScreenController.pageController,
         onPageChanged: (index) {
-          setState(() {
-            _pageIndex = index;
-          });
+          mainScreenController.onpageChange(index);
         },
         children: [
           // Add your tab views here
-          _screens[_pageIndex],
+          mainScreenController.screens[mainScreenController.pageIndex],
         ],
       )),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _pageIndex,
+        currentIndex: mainScreenController.pageIndex,
         onTap: (value) {
-          setState(() {
-            _pageIndex = value;
-            _pageController.jumpToPage(value);
-          });
+          mainScreenController.ontap(value);
         },
         selectedItemColor: Colors.indigo,
         unselectedItemColor: Colors.grey,

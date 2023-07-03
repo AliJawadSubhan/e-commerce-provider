@@ -4,8 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:multivendorapp/firebase_options.dart';
 import 'package:multivendorapp/view_controllers/auth_controller.dart';
+import 'package:multivendorapp/view_controllers/detailed_product_controller.dart';
 import 'package:multivendorapp/view_controllers/home_controller.dart';
 import 'package:multivendorapp/view_controllers/landing_page_controller.dart';
+import 'package:multivendorapp/view_controllers/main_screen_Controller.dart';
 import 'package:multivendorapp/view_controllers/profile_controller.dart';
 import 'package:multivendorapp/views/landing_page.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +32,8 @@ class MultiVendorApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => HomeController()),
         ChangeNotifierProvider(create: (_) => ProfileController()),
         ChangeNotifierProvider(create: (_) => LandingPageController()),
+        ChangeNotifierProvider(create: (_) => MainScreenController()),
+        ChangeNotifierProvider(create: (_) => DetailedProduct()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

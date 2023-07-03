@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:multivendorapp/models/banner.dart';
 import 'package:multivendorapp/models/cateogories_model.dart';
 import 'package:multivendorapp/models/product_model.dart';
 
@@ -36,6 +37,20 @@ class DataBaseService {
         productList.add(products);
       }
       return productList;
+    });
+  }
+
+  // get banners
+  Stream<List<BannerDiscount>> getBannerDiscounts() {
+    final bannerCollection =
+        fireStoreInstance.collection('banners').snapshots();
+    return bannerCollection.map((querySnapshot) {
+      final banners = <BannerDiscount>[];
+      for (var data in querySnapshot.docs) {
+        BannerDiscount banner = BannerDiscount.fromFirebase(data);
+        banners.add(banner);
+      }
+      return banners;
     });
   }
 }

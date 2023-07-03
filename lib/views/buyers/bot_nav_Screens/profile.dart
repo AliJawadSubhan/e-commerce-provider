@@ -11,6 +11,8 @@ class Profile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           const Center(

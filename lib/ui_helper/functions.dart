@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 setHorizontalHeight15() {
-  return SizedBox(
+  return const SizedBox(
     width: 15,
   );
 }
 
 Widget setVerticalHeight15() {
-  return SizedBox(
+  return const SizedBox(
     height: 15,
   );
 }
