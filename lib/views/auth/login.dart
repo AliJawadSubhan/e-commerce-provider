@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          AppMainText(),
+          const AppMainText(),
           SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
