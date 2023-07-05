@@ -50,7 +50,7 @@ class _ProductsFromCateogryState extends State<ProductsFromCateogry> {
                           width: 120,
                           child: CachedNetworkImage(
                             fit: BoxFit.cover,
-                            imageUrl: snapshot.data![index].image,
+                            imageUrl: snapshot.data![index].image!,
                             progressIndicatorBuilder:
                                 (context, url, downloadProgress) =>
                                     const SizedBox(

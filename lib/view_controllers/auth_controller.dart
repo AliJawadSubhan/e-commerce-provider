@@ -11,6 +11,8 @@ class AuthController extends ChangeNotifier {
   var authService = AuthServices();
   bool isLoading = false;
 
+  get currentUserUuid => authService.firebaseAuthInstance.currentUser!.uid;
+
   signInUser(BuildContext context) async {
     if (!emailController.text.contains('@')) {
       log('doesnt contains @');
@@ -22,6 +24,7 @@ class AuthController extends ChangeNotifier {
           notifyListeners();
           await authService.registerUser(
               emailController.text, confirmPasswordController.text);
+          // ignore: use_build_context_synchronously
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
             return MainScreen();
@@ -47,6 +50,7 @@ class AuthController extends ChangeNotifier {
         notifyListeners();
         await authService.loginUser(
             emailController.text, passowrdController.text);
+        // ignore: use_build_context_synchronously
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) {
           return MainScreen();

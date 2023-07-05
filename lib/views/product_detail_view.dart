@@ -58,7 +58,7 @@ class _ProductDetailState extends State<ProductDetail> {
                   width: MediaQuery.of(context).size.width,
                   child: CachedNetworkImage(
                     fit: BoxFit.fill,
-                    imageUrl: detailedProduct.productModel!.image,
+                    imageUrl: detailedProduct.productModel!.image!,
                     progressIndicatorBuilder:
                         (context, url, downloadProgress) => const SizedBox(
                       height: 50,
@@ -78,7 +78,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       Row(
                         children: [
                           Text(
-                            detailedProduct.productModel!.name,
+                            detailedProduct.productModel!.name!,
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 17),
                           ),
@@ -92,7 +92,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                   BorderRadius.all(Radius.circular(24)),
                             ),
                             child: Text(
-                              detailedProduct.productModel!.category,
+                              detailedProduct.productModel!.category!,
                               style: const TextStyle(color: Colors.white),
                             ),
                           ),
@@ -101,7 +101,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       ),
                       setVerticalHeight15(),
                       Text(
-                        detailedProduct.productModel!.description,
+                        detailedProduct.productModel!.description!,
                         style: const TextStyle(fontSize: 17),
                       ),
                     ],
@@ -160,11 +160,20 @@ class _ProductDetailState extends State<ProductDetail> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                              onPressed: () {},
-                              child: const Text(
-                                'Add this item to cart',
-                                style: TextStyle(color: Colors.white),
-                              ),
+                              onPressed: () {
+                                detailedProduct.addToCartProvider(context);
+                              },
+                              child: detailedProduct.isLoading
+                                  ? const Center(
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : Text(
+                                      detailedProduct.buttonText,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
                             )
                           : Padding(
                               padding:

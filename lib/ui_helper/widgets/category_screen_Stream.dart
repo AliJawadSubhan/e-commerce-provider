@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart'
     show CachedNetworkImage;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'
     show
         BoxFit,
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart'
         Divider,
         EdgeInsets,
         Expanded,
+        GestureDetector,
         Icon,
         Icons,
         Image,
@@ -28,9 +30,11 @@ import 'package:multivendorapp/view_controllers/home_controller.dart';
 import 'package:provider/provider.dart';
 
 class CategoryStream extends StatelessWidget {
+  const CategoryStream({super.key});
+
   @override
   Widget build(BuildContext context) {
-    var categoryProvider = Provider.of<HomeController>(context);
+    final categoryProvider = Provider.of<HomeController>(context);
 
     return Expanded(
       child: StreamBuilder(
@@ -53,7 +57,7 @@ class CategoryStream extends StatelessWidget {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Container(
+                              child: SizedBox(
                                 height: 130,
                                 width: 130,
                                 // color: Colors.indigo,
@@ -74,7 +78,19 @@ class CategoryStream extends StatelessWidget {
                               ),
                             ),
                             setHorizontalHeight15(),
-                            Text(snapshot.data![index].category),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(snapshot.data![index].category),
+                                GestureDetector(
+                                    onTap: () {
+                                      categoryProvider.navigateToCategoryScreen(
+                                          context,
+                                          snapshot.data![index].category);
+                                    },
+                                    child: const Icon(Icons.arrow_forward_ios)),
+                              ],
+                            ),
                           ],
                         ),
                         const Divider(),

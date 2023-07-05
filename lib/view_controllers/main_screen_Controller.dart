@@ -6,7 +6,7 @@ import 'package:multivendorapp/views/buyers/bot_nav_Screens/profile.dart';
 import 'package:multivendorapp/views/buyers/bot_nav_Screens/search.dart';
 
 class MainScreenController extends ChangeNotifier {
-  final PageController pageController = PageController(initialPage: 0);
+  final PageController pageController = PageController(initialPage: 1);
 
   int pageIndex = 0;
   final List screens = const <Widget>[

@@ -91,4 +91,41 @@ class DataBaseService {
       });
     }
   }
+
+  // add to Cart func
+
+  Future<bool> addToCartfunction(
+      String userUid, ProductModel productModel) async {
+    final cartCollection =
+        fireStoreInstance.collection('users').doc(userUid).collection('cart');
+
+    try {
+      final cartRefrence = cartCollection.doc(productModel.id);
+
+      final documentRef = cartRefrence.id;
+      final cartSnapshot = await cartRefrence.get();
+
+      // Check if the product already exists in the cart
+      if (cartSnapshot.exists) {
+        // Product already exists in the cart, no need to do anything
+        return true;
+      } else {
+        final userCart = ProductModel(
+          created_at: productModel.created_at,
+          quantity: productModel.quantity,
+          category: productModel.category,
+          price: productModel.price,
+          description: productModel.description,
+          image: productModel.image,
+          name: productModel.name,
+          id: documentRef,
+          isInStock: productModel.isInStock,
+        ).toFirestore();
+        cartRefrence.set(userCart);
+        return false;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

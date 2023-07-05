@@ -48,7 +48,7 @@ class ProductStream extends StatelessWidget {
                               color: Colors.grey[300],
                               child: CachedNetworkImage(
                                 fit: BoxFit.fill,
-                                imageUrl: snapshot.data![index].image,
+                                imageUrl: snapshot.data![index].image!,
                                 progressIndicatorBuilder:
                                     (context, url, downloadProgress) =>
                                         const SizedBox(
@@ -68,7 +68,7 @@ class ProductStream extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: Text(
-                                snapshot.data![index].name,
+                                snapshot.data![index].name!,
                                 style: const TextStyle(
                                   fontSize: 19,
                                   fontWeight: FontWeight.bold,
