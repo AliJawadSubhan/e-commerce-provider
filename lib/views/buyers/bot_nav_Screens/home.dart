@@ -60,9 +60,20 @@ class Home extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Center(
-                                  child: Image.network(
-                                    snapshot.data![index].banner_image,
+                                  child: CachedNetworkImage(
                                     fit: BoxFit.cover,
+                                    imageUrl:
+                                        snapshot.data![index].banner_image,
+                                    progressIndicatorBuilder:
+                                        (context, url, downloadProgress) =>
+                                            const SizedBox(
+                                      height: 50,
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
                                   ),
                                 ),
                               ),

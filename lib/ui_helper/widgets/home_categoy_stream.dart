@@ -21,14 +21,18 @@ SizedBox home_category_stream(context) {
           shrinkWrap: true,
           physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
-          itemCount: snapshot.data?.length,
+          itemCount: snapshot.data!.length,
           itemBuilder: (c, i) {
-            return Container(
-              margin: const EdgeInsets.all(5),
-              height: 75,
-              width: 100,
-              // color: Colors.blueGrey,
-              child: Center(
+            return GestureDetector(
+              onDoubleTap: () {
+                homeController.navigateToCategoryScreen(
+                    context, snapshot.data![i].category);
+              },
+              child: Container(
+                margin: const EdgeInsets.all(5),
+                height: 75,
+                width: 100,
+                // color: Colors.blueGrey,
                 child: Column(
                   // alignment: Alignment.center,
                   children: [

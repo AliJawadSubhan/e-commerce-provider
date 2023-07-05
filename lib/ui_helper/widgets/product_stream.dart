@@ -30,7 +30,7 @@ class ProductStream extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Material(
                   child: GestureDetector(
-                    onLongPress: () {
+                    onDoubleTap: () {
                       homeController.navigateToDetailScreen(
                           snapshot.data![index], context);
                     },

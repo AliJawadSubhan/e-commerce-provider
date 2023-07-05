@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:multivendorapp/models/banner.dart';
 import 'package:multivendorapp/models/cateogories_model.dart';
@@ -16,13 +18,18 @@ class DataBaseService {
 
   Stream<List<CategoryModel>> getCateogoriesFromFirebase() {
     final productCollectoin = fireStoreInstance.collection('cate').snapshots();
+    log('Product Collection: $productCollectoin');
+
     return productCollectoin.map((querySnapshots) {
-      final productList = <CategoryModel>[];
+      final categoryList = <CategoryModel>[];
+      log('querysnapshot.length: ${querySnapshots.docs.length}');
       for (var data in querySnapshots.docs) {
-        CategoryModel products = CategoryModel.fromFirebase(data);
-        productList.add(products);
+        CategoryModel categoryModel = CategoryModel.fromFirebase(data);
+        categoryList.add(categoryModel);
+        log('Category Model: ${categoryModel.category}');
+        log('Data : $data');
       }
-      return productList;
+      return categoryList;
     });
   }
 
@@ -52,5 +59,36 @@ class DataBaseService {
       }
       return banners;
     });
+  }
+  // getProductsFromCategory
+
+  Stream<List<ProductModel>> getProductsViaCategories(
+      {required String category}) {
+    final categoryCollection = fireStoreInstance.collection('products');
+
+    if (category != '') {
+      final categoriezedProductList = <ProductModel>[];
+
+      return categoryCollection
+          .where("Category", isEqualTo: category)
+          .snapshots()
+          .map((querySnapshot) {
+        for (var data in querySnapshot.docs) {
+          ProductModel categorizedProduct = ProductModel.fromFirestore(data);
+          categoriezedProductList.add(categorizedProduct);
+        }
+        return categoriezedProductList;
+      });
+    } else {
+      final productList = <ProductModel>[];
+
+      return categoryCollection.snapshots().map((querySnapshots) {
+        for (var data in querySnapshots.docs) {
+          ProductModel products = ProductModel.fromFirestore(data);
+          productList.add(products);
+        }
+        return productList;
+      });
+    }
   }
 }

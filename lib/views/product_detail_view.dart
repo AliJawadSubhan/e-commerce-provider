@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:multivendorapp/models/product_model.dart';
@@ -16,16 +18,21 @@ class ProductDetail extends StatefulWidget {
 class _ProductDetailState extends State<ProductDetail> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Provider.of<DetailedProduct>(context, listen: false)
+    Provider.of<DetailedProductController>(context, listen: false)
         .changeProductModel(widget.productModel);
+
+    Provider.of<DetailedProductController>(
+      context,
+      listen: false,
+    ).initProvider();
   }
 
   @override
   Widget build(BuildContext context) {
+    log('build crated');
     return Scaffold(
-      body: Consumer<DetailedProduct>(
+      body: Consumer<DetailedProductController>(
         builder: (context, detailedProduct, child) {
           if (detailedProduct.productModel == null) {
             return const Center(
@@ -47,7 +54,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       ),
                     ],
                   ),
-                  height: MediaQuery.of(context).size.height * 0.3,
+                  height: MediaQuery.of(context).size.height * 0.4,
                   width: MediaQuery.of(context).size.width,
                   child: CachedNetworkImage(
                     fit: BoxFit.fill,
@@ -65,7 +72,7 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
                 setVerticalHeight15(),
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(7.0),
                   child: Column(
                     children: [
                       Row(
@@ -76,14 +83,19 @@ class _ProductDetailState extends State<ProductDetail> {
                                 fontWeight: FontWeight.bold, fontSize: 17),
                           ),
                           const Spacer(),
-                          detailedProduct.productModel!.isInStock == false
-                              ? const Text(
-                                  'Out of Stock',
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.w500),
-                                )
-                              : const Text(''),
+
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: const BoxDecoration(
+                              color: Colors.indigo,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(24)),
+                            ),
+                            child: Text(
+                              detailedProduct.productModel!.category,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
                           // Text(detailedProduct.productModel),
                         ],
                       ),
@@ -98,20 +110,23 @@ class _ProductDetailState extends State<ProductDetail> {
                 setVerticalHeight15(),
                 detailedProduct.productModel!.isInStock == false
                     ? const Padding(
-                        padding: EdgeInsets.all(10.0),
+                        padding: EdgeInsets.all(7.0),
                         child: Text(
                           'Apologies, Out of Stock.',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.red),
                         ),
                       )
                     : Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.all(7.0),
                         child: Row(
+                          // mainAxisAlignment:,
                           children: [
                             Text(
-                              '\$${detailedProduct.productModel!.price}',
-                              style: TextStyle(
+                              '\$${detailedProduct.calculatedPrice()}',
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 34),
                             ),
                             setHorizontalHeight15(),
@@ -120,31 +135,54 @@ class _ProductDetailState extends State<ProductDetail> {
                               style: TextStyle(
                                   fontWeight: FontWeight.w100, fontSize: 14),
                             ),
+                            const Spacer(),
+                            SizedBox(
+                              height: 70,
+                              width: 80,
+                              child: buildNumberDropdown(
+                                  detailedProduct.onChanged,
+                                  detailedProduct.selectedNumber),
+                            )
                           ],
                         ),
                       ),
                 const Spacer(),
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(7.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              detailedProduct.productModel!.isInStock != false
-                                  ? Colors.indigo
-                                  : Colors.indigo[100],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: const Text(
-                          'Add this item to cart',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
+                      detailedProduct.productModel!.isInStock != false
+                          ? ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.indigo,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: const Text(
+                                'Add this item to cart',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          : Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 10.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.indigo[100],
+                                ),
+                                height: 37,
+                                child: Center(
+                                  child: Text(
+                                    'Add this item to cart',
+                                    style: TextStyle(color: Colors.grey[700]),
+                                  ),
+                                ),
+                              ),
+                            ),
                     ],
                   ),
                 ),

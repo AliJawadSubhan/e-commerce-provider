@@ -53,7 +53,7 @@ class _LandingPageState extends State<LandingPage> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Display a loading indicator while the future is being resolved
-          return Scaffold(
+          return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(
                 color: Colors.indigo,
@@ -63,7 +63,7 @@ class _LandingPageState extends State<LandingPage> {
         } else if (snapshot.hasError) {
           // Handle any error that occurred while resolving the future
           log('Error: ${snapshot.error}');
-          return LoginScreen();
+          return const LoginScreen();
         } else {
           // Display the appropriate screen based on the resolved future value
           return snapshot.data ?? LoginScreen();

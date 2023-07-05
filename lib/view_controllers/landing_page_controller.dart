@@ -8,7 +8,7 @@ class LandingPageController extends ChangeNotifier {
   final authServices = AuthServices();
 
   seeIfuserEmailNullorNot() {
-    return Future.delayed(const Duration(seconds: 2), () {
+    return Future.delayed(const Duration(seconds: 1), () {
       log('user email: ${authServices.firebaseAuthInstance.currentUser?.email}');
       if (authServices.firebaseAuthInstance.currentUser?.email == null) {
         return const LoginScreen();

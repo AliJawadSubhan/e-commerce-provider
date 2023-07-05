@@ -15,7 +15,6 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     Provider.of<AuthController>(context, listen: false)
         .confirmPasswordController
