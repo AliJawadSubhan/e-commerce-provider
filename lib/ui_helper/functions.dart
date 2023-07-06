@@ -29,3 +29,38 @@ buildNumberDropdown(Function(String) onChang, String selectedNumber) {
     }).toList(),
   );
 }
+
+showSnackBar(String content, context) {
+  final snackBar = SnackBar(
+    duration: const Duration(seconds: 2),
+    backgroundColor: Colors.blueGrey,
+    elevation: 6,
+    behavior: SnackBarBehavior.floating,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+    content: Row(
+      children: [
+        const Expanded(
+          child: Icon(
+            Icons.shopping_cart,
+            color: Colors.white,
+          ),
+        ),
+        const SizedBox(width: 7),
+        Expanded(
+          flex: 3,
+          child: Text(
+            content,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+  return ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}

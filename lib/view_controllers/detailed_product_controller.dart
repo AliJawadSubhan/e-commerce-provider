@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:multivendorapp/models/product_model.dart';
 import 'package:multivendorapp/services/db_serivce.dart';
+import 'package:multivendorapp/ui_helper/functions.dart';
 import 'package:multivendorapp/view_controllers/auth_controller.dart';
 
 class DetailedProductController extends ChangeNotifier {
@@ -26,86 +27,23 @@ class DetailedProductController extends ChangeNotifier {
 
       productModel?.quantity = selectedNumber;
       productModel?.created_at = DateTime.now().toString();
-      productModel?.price = totalAmount;
-      final isNotInCar = await _dataBaseService.addToCartfunction(
+
+      final isInCart = await _dataBaseService.addToCartfunction(
           authController.currentUserUuid, productModel!);
       log('Added To cart');
-      if (isNotInCar) {
+      buttonText = 'Added to Cart';
+      notifyListeners();
+      if (isInCart) {
         log('Already in cart');
-        final snackBar = SnackBar(
-          duration: const Duration(seconds: 2),
-          backgroundColor: Colors.blueGrey,
-          elevation: 6,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          content: Row(
-            children: [
-              const Expanded(
-                child: Icon(
-                  Icons.shopping_cart,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(width: 7),
-              Expanded(
-                flex: 3,
-                child: Text(
-                  '${productModel!.name} is already in the Cart',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        showSnackBar('${productModel!.name} is already in the Cart', context);
 
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
         buttonText = 'Already exists In cart, Go there';
         notifyListeners();
       }
-      buttonText = 'Added this Item to cart';
-      notifyListeners();
     } catch (e) {
       isLoading = false;
       notifyListeners();
-      final snackBar = SnackBar(
-        duration: const Duration(seconds: 2),
-        backgroundColor: Colors.blueGrey,
-        elevation: 6,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        content: Row(
-          children: [
-            const Expanded(
-              child: Icon(
-                Icons.shopping_cart,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(width: 7),
-            Expanded(
-              flex: 3,
-              child: Text(
-                e.toString(),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      showSnackBar(e.toString(), context);
     } finally {
       isLoading = false;
       notifyListeners();

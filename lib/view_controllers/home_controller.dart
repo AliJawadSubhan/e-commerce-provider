@@ -1,10 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:multivendorapp/models/banner.dart';
 import 'package:multivendorapp/models/cateogories_model.dart';
 import 'package:multivendorapp/models/product_model.dart';
 import 'package:multivendorapp/services/db_serivce.dart';
-import 'package:multivendorapp/view_controllers/auth_controller.dart';
 // import 'package:multivendorapp/ui_helper/widgets/product_stream.dart';
 import 'dart:core';
 import 'package:multivendorapp/views/product_detail_view.dart';
