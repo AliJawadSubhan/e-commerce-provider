@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:multivendorapp/ui_helper/functions.dart';
@@ -12,67 +14,161 @@ class Cart extends StatelessWidget {
     final cartProvider = Provider.of<CartController>(context);
     return Column(
       children: [
+        const Text(
+          'Your Cart',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+              fontStyle: FontStyle.italic),
+        ),
+        setVerticalHeight15(),
         Expanded(
           child: StreamBuilder(
               stream: cartProvider.getCartOfUserProvider(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
+                  return const Center(child: LinearProgressIndicator());
                 }
                 if (snapshot.data == null) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                      child: Text('There is nothing in your cart!'));
+                }
+
+                if (snapshot.data == null) {
+                  return const Center(
+                      child: Text('There is nothing in your cart!'));
                 } else {
-                  return ListView.builder(
-                      itemCount: snapshot.data?.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SizedBox(
-                                      height: 130,
-                                      width: 130,
-                                      // color: Colors.indigo,
-                                      child: CachedNetworkImage(
-                                        fit: BoxFit.fill,
-                                        imageUrl: snapshot.data![index].image
-                                            .toString(),
-                                        progressIndicatorBuilder:
-                                            (context, url, downloadProgress) =>
-                                                const SizedBox(
-                                          height: 50,
-                                          child: Center(
-                                            child: CircularProgressIndicator(),
-                                          ),
-                                        ),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
+                  List<int> allPrices = [];
+                  for (int index = 0; index < snapshot.data!.length; index++) {
+                    int? singlePrice = snapshot.data![index].price;
+                    allPrices.add(singlePrice!);
+                  }
+                  log(allPrices.toString());
+                  return Stack(
+                    children: [
+                      SizedBox(
+                        height: double.infinity,
+                        width: double.infinity,
+                        child: ListView.builder(
+                            itemCount: snapshot.data?.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: const Offset(0, 3),
                                       ),
-                                    ),
-                                  ),
-                                  setHorizontalHeight15(),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(snapshot.data![index].name),
-                                      GestureDetector(
-                                          onTap: () {},
-                                          child: const Icon(
-                                              Icons.arrow_forward_ios)),
                                     ],
                                   ),
-                                ],
-                              ),
-                              const Divider(),
-                            ],
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: SizedBox(
+                                              height: 130,
+                                              width: 130,
+                                              child: CachedNetworkImage(
+                                                fit: BoxFit.cover,
+                                                imageUrl: snapshot
+                                                    .data![index].image
+                                                    .toString(),
+                                                progressIndicatorBuilder:
+                                                    (context, url,
+                                                            downloadProgress) =>
+                                                        Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    value: downloadProgress
+                                                        .progress,
+                                                  ),
+                                                ),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        const Icon(Icons.error),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              cartProvider
+                                                  .showTotalPrice(allPrices),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    180, // Adjust the width constraint as needed
+                                                child: Text(
+                                                  snapshot.data![index].name!,
+                                                  textAlign: TextAlign.start,
+                                                  style: const TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Row(
+                                                children: [
+                                                  cartProvider
+                                                      .calculateProductPrice(
+                                                          snapshot.data![index]
+                                                              .price!,
+                                                          snapshot.data![index]
+                                                              .quantity!),
+                                                  const SizedBox(width: 10),
+                                                  Text(
+                                                    'Quantity: ${snapshot.data![index].quantity!.toString()}',
+                                                    style: const TextStyle(
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.indigo,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                onPressed: () {},
+                                child: cartProvider.showTotalPrice(allPrices)),
                           ),
-                        );
-                      });
+                        ),
+                      ),
+                    ],
+                  );
                 }
               }),
         ),

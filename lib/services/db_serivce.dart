@@ -130,7 +130,7 @@ class DataBaseService {
   }
 
   //get Cart from User
-  Stream<List<CartModel>> getCardOfUserfromFireStore(String userUid) {
+  Stream<List<ProductModel>> getCardOfUserfromFireStore(String userUid) {
     final cartCollection = fireStoreInstance
         .collection('users')
         .doc(userUid)
@@ -138,12 +138,14 @@ class DataBaseService {
         .snapshots();
 
     return cartCollection.map((querySnapshot) {
-      final cartList = <CartModel>[];
+      final cartList = <ProductModel>[];
       for (QueryDocumentSnapshot data in querySnapshot.docs) {
-        CartModel cartModel = CartModel.fromFirestore(data);
+        ProductModel cartModel = ProductModel.fromFirestore(data);
         cartList.add(cartModel);
       }
       return cartList;
     });
   }
+  // delete Product
+  // Future<bool> removeProductFromCart() {}
 }
