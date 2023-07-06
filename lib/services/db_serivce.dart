@@ -5,6 +5,7 @@ import 'package:multivendorapp/models/banner.dart';
 import 'package:multivendorapp/models/cart_model.dart';
 import 'package:multivendorapp/models/cateogories_model.dart';
 import 'package:multivendorapp/models/product_model.dart';
+import 'package:multivendorapp/views/buyers/bot_nav_Screens/cart.dart';
 
 class DataBaseService {
   FirebaseFirestore fireStoreInstance = FirebaseFirestore.instance;
@@ -28,7 +29,7 @@ class DataBaseService {
         CategoryModel categoryModel = CategoryModel.fromFirebase(data);
         categoryList.add(categoryModel);
         log('Category Model: ${categoryModel.category}');
-        log('Data : $data');
+        log('Data : ${data.get('image')}');
       }
       return categoryList;
     });
@@ -135,7 +136,9 @@ class DataBaseService {
         .collection('users')
         .doc(userUid)
         .collection('cart')
+        .orderBy('created_at')
         .snapshots();
+    // .snapshots();
 
     return cartCollection.map((querySnapshot) {
       final cartList = <ProductModel>[];
@@ -146,6 +149,18 @@ class DataBaseService {
       return cartList;
     });
   }
+
   // delete Product
-  // Future<bool> removeProductFromCart() {}
+  Future<bool> removeProductFromCart(
+      ProductModel cartModel, String useruid) async {
+    return await fireStoreInstance
+        .collection('users')
+        .doc(useruid)
+        .collection('cart')
+        .doc(cartModel.id)
+        .delete()
+        .then((value) {
+      return true;
+    });
+  }
 }

@@ -1,7 +1,6 @@
-import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:multivendorapp/models/cart_model.dart';
+import 'package:multivendorapp/ui_helper/functions.dart';
 import 'package:multivendorapp/view_controllers/auth_controller.dart';
 
 import '../models/product_model.dart';
@@ -12,6 +11,13 @@ class CartController extends ChangeNotifier {
   Stream<List<ProductModel>> getCartOfUserProvider() {
     return _dataBaseService
         .getCardOfUserfromFireStore(AuthController().currentUserUuid);
+  }
+
+  deleteProductCart(ProductModel cartModel, BuildContext context) async {
+    await _dataBaseService.removeProductFromCart(
+        cartModel, AuthController().currentUserUuid);
+    notifyListeners();
+    showSnackBar('Deleted', context);
   }
 
   Widget calculateProductPrice(int? price, String? quantity) {
@@ -53,9 +59,6 @@ class CartController extends ChangeNotifier {
     for (var price in prices) {
       totalAmount = totalAmount + price;
     }
-    return Text(
-      totalAmount.toString(),
-      style: TextStyle(color: Colors.white),
-    );
+    return totalAmount.toString();
   }
 }

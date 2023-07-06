@@ -42,6 +42,7 @@ dependencies:
   cloud_firestore: ^4.8.2
   provider:
   cached_network_image: ^3.2.3
+  # swipeable_tile: ^2.0.0+3
   # flutter_number_picker: ^1.0.4
   
 

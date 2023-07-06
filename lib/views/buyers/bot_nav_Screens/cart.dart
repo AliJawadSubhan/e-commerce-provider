@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multivendorapp/ui_helper/functions.dart';
 import 'package:multivendorapp/view_controllers/cart_controller.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +30,7 @@ class Cart extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: LinearProgressIndicator());
                 }
-                if (snapshot.data == null) {
+                if (snapshot.data!.isEmpty) {
                   return const Center(
                       child: Text('There is nothing in your cart!'));
                 }
@@ -102,24 +103,22 @@ class Cart extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              cartProvider
-                                                  .showTotalPrice(allPrices),
                                               SizedBox(
                                                 width: MediaQuery.of(context)
                                                         .size
                                                         .width -
                                                     180, // Adjust the width constraint as needed
                                                 child: Text(
-                                                  snapshot.data![index].name!,
-                                                  textAlign: TextAlign.start,
-                                                  style: const TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
+                                                    snapshot.data![index].name!,
+                                                    textAlign: TextAlign.start,
+                                                    style: const TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis),
                                               ),
                                               const SizedBox(height: 5),
                                               Row(
@@ -135,6 +134,25 @@ class Cart extends StatelessWidget {
                                                     'Quantity: ${snapshot.data![index].quantity!.toString()}',
                                                     style: const TextStyle(
                                                       fontSize: 16,
+                                                    ),
+                                                  ),
+                                                  // Spacer(),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            22.0),
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        cartProvider
+                                                            .deleteProductCart(
+                                                                snapshot.data![
+                                                                    index],
+                                                                context);
+                                                      },
+                                                      child: const FaIcon(
+                                                        FontAwesomeIcons.trash,
+                                                        color: Colors.red,
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
@@ -157,13 +175,20 @@ class Cart extends StatelessWidget {
                             width: double.infinity,
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.indigo,
+                                  backgroundColor: Colors.transparent,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
                                 onPressed: () {},
-                                child: cartProvider.showTotalPrice(allPrices)),
+                                child: Text(
+                                  // ignore: prefer_interpolation_to_compose_strings
+                                  'Check out. \$' +
+                                      cartProvider
+                                          .showTotalPrice(allPrices)
+                                          .toString(),
+                                  style: const TextStyle(color: Colors.white),
+                                )),
                           ),
                         ),
                       ),
