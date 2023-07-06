@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:multivendorapp/models/banner.dart';
+import 'package:multivendorapp/models/cart_model.dart';
 import 'package:multivendorapp/models/cateogories_model.dart';
 import 'package:multivendorapp/models/product_model.dart';
 
@@ -101,7 +102,6 @@ class DataBaseService {
 
     try {
       final cartRefrence = cartCollection.doc(productModel.id);
-
       final documentRef = cartRefrence.id;
       final cartSnapshot = await cartRefrence.get();
 
@@ -127,5 +127,23 @@ class DataBaseService {
     } catch (e) {
       rethrow;
     }
+  }
+
+  //get Cart from User
+  Stream<List<CartModel>> getCardOfUserfromFireStore(String userUid) {
+    final cartCollection = fireStoreInstance
+        .collection('users')
+        .doc(userUid)
+        .collection('cart')
+        .snapshots();
+
+    return cartCollection.map((querySnapshot) {
+      final cartList = <CartModel>[];
+      for (QueryDocumentSnapshot data in querySnapshot.docs) {
+        CartModel cartModel = CartModel.fromFirestore(data);
+        cartList.add(cartModel);
+      }
+      return cartList;
+    });
   }
 }
