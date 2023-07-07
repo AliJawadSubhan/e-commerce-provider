@@ -43,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
         unselectedFontSize: 12,
         items: const [
           BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.home),
+            icon: FaIcon(FontAwesomeIcons.house),
             label: 'Home',
           ),
           BottomNavigationBarItem(
@@ -51,11 +51,11 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Categories',
           ),
           BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.shoppingCart),
+            icon: FaIcon(FontAwesomeIcons.cartShopping),
             label: 'Cart',
           ),
           BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.search),
+            icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
             label: 'Search',
           ),
           BottomNavigationBarItem(

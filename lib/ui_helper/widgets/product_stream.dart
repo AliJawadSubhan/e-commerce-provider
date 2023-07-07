@@ -4,6 +4,8 @@ import 'package:multivendorapp/view_controllers/home_controller.dart';
 import 'package:provider/provider.dart';
 
 class ProductStream extends StatelessWidget {
+  const ProductStream({super.key});
+
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Provider.of<HomeController>(context);

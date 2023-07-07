@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductModel {
-  String? category, description, image, name, id, created_at, quantity;
+  // ignore: non_constant_identifier_names
+  String? category, description, image, name, id, created_at;
   bool? isInStock;
-  int? price;
+  int? price, quantity;
 
   ProductModel(
       {this.category,
+      // ignore: non_constant_identifier_names
       this.created_at,
       this.quantity,
       this.price,

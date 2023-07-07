@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:multivendorapp/view_controllers/landing_page_controller.dart';
 import 'package:multivendorapp/views/auth/login.dart';
+import 'package:multivendorapp/views/splash_view.dart';
 import 'package:provider/provider.dart';
 
 class LandingPage extends StatefulWidget {
@@ -15,7 +16,6 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Provider.of<LandingPageController>(context, listen: false)
         .seeIfuserEmailNullorNot();
@@ -53,20 +53,14 @@ class _LandingPageState extends State<LandingPage> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Display a loading indicator while the future is being resolved
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(
-                color: Colors.indigo,
-              ),
-            ),
-          );
+          return SplashView();
         } else if (snapshot.hasError) {
           // Handle any error that occurred while resolving the future
           log('Error: ${snapshot.error}');
           return const LoginScreen();
         } else {
           // Display the appropriate screen based on the resolved future value
-          return snapshot.data ?? LoginScreen();
+          return snapshot.data ?? const LoginScreen();
         }
       },
     );

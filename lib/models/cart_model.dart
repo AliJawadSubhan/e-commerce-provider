@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CartModel {
+  // ignore: non_constant_identifier_names
   final String category, name, id, created_at, image;
   final int price, quantity;
 
   CartModel({
     required this.image,
+    // ignore: non_constant_identifier_names
     required this.created_at,
     required this.quantity,
     required this.category,

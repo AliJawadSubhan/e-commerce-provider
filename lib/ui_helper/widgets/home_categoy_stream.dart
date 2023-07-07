@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:multivendorapp/view_controllers/home_controller.dart';
 import 'package:provider/provider.dart';
 
+// ignore: non_constant_identifier_names
 SizedBox home_category_stream(context) {
   var homeController = Provider.of<HomeController>(context);
 

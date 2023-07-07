@@ -27,7 +27,7 @@ class AuthController extends ChangeNotifier {
           // ignore: use_build_context_synchronously
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
-            return MainScreen();
+            return const MainScreen();
           }));
         } catch (e) {
           log(e.toString());
@@ -53,7 +53,7 @@ class AuthController extends ChangeNotifier {
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) {
-          return MainScreen();
+          return const MainScreen();
         }));
         log('login completed');
       } catch (e) {

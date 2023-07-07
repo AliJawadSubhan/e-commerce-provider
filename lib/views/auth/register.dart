@@ -52,7 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: context.watch<AuthController>().emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
-                      prefixIcon: Icon(Icons.email),
+                      prefixIcon: const Icon(Icons.email),
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
@@ -99,14 +99,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       context.read<AuthController>().signInUser(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.indigo,
+                      backgroundColor: Colors.indigo,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     child: context.watch<AuthController>().isLoading
                         ? const Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0),
                             child: CircularProgressIndicator(
                               color: Colors.white,
                             ),
@@ -129,7 +129,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           // Register logic
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return LoginScreen();
+                            return const LoginScreen();
                           }));
                         },
                         child: const Text(

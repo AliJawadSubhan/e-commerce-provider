@@ -106,7 +106,7 @@ class Home extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             setVerticalHeight15(),
-            ProductStream(),
+            const ProductStream(),
           ],
         ),
       ),

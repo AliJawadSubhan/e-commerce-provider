@@ -1,11 +1,8 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:multivendorapp/models/banner.dart';
-import 'package:multivendorapp/models/cart_model.dart';
 import 'package:multivendorapp/models/cateogories_model.dart';
 import 'package:multivendorapp/models/product_model.dart';
-import 'package:multivendorapp/views/buyers/bot_nav_Screens/cart.dart';
 
 class DataBaseService {
   FirebaseFirestore fireStoreInstance = FirebaseFirestore.instance;
@@ -40,6 +37,23 @@ class DataBaseService {
     final productCollectoin =
         fireStoreInstance.collection('products').snapshots();
     return productCollectoin.map((querySnapshots) {
+      final productList = <ProductModel>[];
+      for (var data in querySnapshots.docs) {
+        ProductModel products = ProductModel.fromFirestore(data);
+        productList.add(products);
+      }
+      return productList;
+    });
+  }
+
+  Stream<List<ProductModel>> getProductByNameFromFirestore(
+      String searchKeyword) {
+    final productCollection = fireStoreInstance
+        .collection('products')
+        .where('Name', isGreaterThanOrEqualTo: searchKeyword)
+        .snapshots();
+
+    return productCollection.map((querySnapshots) {
       final productList = <ProductModel>[];
       for (var data in querySnapshots.docs) {
         ProductModel products = ProductModel.fromFirestore(data);
@@ -163,4 +177,6 @@ class DataBaseService {
       return true;
     });
   }
+
+  //Search Product
 }

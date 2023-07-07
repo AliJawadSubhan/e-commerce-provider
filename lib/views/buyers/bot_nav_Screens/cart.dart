@@ -44,7 +44,12 @@ class Cart extends StatelessWidget {
                     int? singlePrice = snapshot.data![index].price;
                     allPrices.add(singlePrice!);
                   }
-                  log(allPrices.toString());
+                  List<int> allQuantityies = [];
+                  for (var i = 0; i < snapshot.data!.length; i++) {
+                    int? singleQuantity = snapshot.data![i].quantity!;
+                    allQuantityies.add(singleQuantity);
+                  }
+                  log(allQuantityies.toString());
                   return Stack(
                     children: [
                       SizedBox(
@@ -53,6 +58,9 @@ class Cart extends StatelessWidget {
                         child: ListView.builder(
                             itemCount: snapshot.data?.length,
                             itemBuilder: (context, index) {
+                              cartProvider.price = snapshot.data![index].price!;
+                              cartProvider.quantity =
+                                  snapshot.data![index].quantity!;
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Container(
@@ -123,12 +131,11 @@ class Cart extends StatelessWidget {
                                               const SizedBox(height: 5),
                                               Row(
                                                 children: [
-                                                  cartProvider
-                                                      .calculateProductPrice(
-                                                          snapshot.data![index]
-                                                              .price!,
-                                                          snapshot.data![index]
-                                                              .quantity!),
+                                                  Text(
+                                                    cartProvider
+                                                        .calculateProductPrice(),
+                                                  ),
+
                                                   const SizedBox(width: 10),
                                                   Text(
                                                     'Quantity: ${snapshot.data![index].quantity!.toString()}',
@@ -184,9 +191,10 @@ class Cart extends StatelessWidget {
                                 child: Text(
                                   // ignore: prefer_interpolation_to_compose_strings
                                   'Check out. \$' +
-                                      cartProvider
-                                          .showTotalPrice(allPrices)
-                                          .toString(),
+                                      cartProvider.showTotalPrice(
+                                        allPrices,
+                                        allQuantityies: allQuantityies,
+                                      ),
                                   style: const TextStyle(color: Colors.white),
                                 )),
                           ),

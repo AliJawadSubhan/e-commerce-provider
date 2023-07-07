@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: file_names
+
+import 'package:flutter/material.dart'
+    show ChangeNotifier, PageController, Widget;
 import 'package:multivendorapp/views/buyers/bot_nav_Screens/cart.dart';
 import 'package:multivendorapp/views/buyers/bot_nav_Screens/categories.dart';
 import 'package:multivendorapp/views/buyers/bot_nav_Screens/home.dart';

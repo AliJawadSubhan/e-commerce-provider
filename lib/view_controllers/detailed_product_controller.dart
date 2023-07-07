@@ -25,7 +25,7 @@ class DetailedProductController extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
-      productModel?.quantity = selectedNumber;
+      productModel?.quantity = int.parse(selectedNumber);
       productModel?.created_at = DateTime.now().toString();
 
       final isInCart = await _dataBaseService.addToCartfunction(
